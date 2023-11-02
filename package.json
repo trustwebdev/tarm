@@ -18,7 +18,7 @@
   "description": "This Repo contains the Program for the Hack of GitHub Contribution Graph.",
   "dependencies": {
     "jsonfile": "^6.1.0",
-    "simple-git": "^2.35.2"
+    "simple-git": "^2.48.0"
   },
   "devDependencies": {
     "webpack-config-utils": "^2.3.1"
