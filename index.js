@@ -7,40 +7,33 @@ const FILE_PATH = "./data.json";
 const makeCommit = (n) => {
   if (n === 0) return simpleGit().push();
 
-  const x = randomInt(0, 54);
-  const y = randomInt(0, 6);
-
   const DATE = new Date();
 
-  DATE.setUTCFullYear(DATE.getUTCFullYear() - 1);
-  DATE.setDate(DATE.getDate() + 1);
-  DATE.setDate(DATE.getDate() + x * 7);
-  DATE.setDate(DATE.getDate() + y);
-  /*
-     * you can speed up with this ::
-      DATE.setDate(
-           DATE.getDate()+(((x*7)+y)+1)
-       );
-     *
-     *
-     */
+  // Set the date to January 1 of the current year
+  DATE.setUTCMonth(0, 2);
 
-  const data = {
-    date: DATE.valueOf(),
-  };
+  // Generate 30 commits for each day
+  for (let i = 0; i < 30; i++) {
+    const commitDate = new Date(DATE);
+    commitDate.setDate(commitDate.getDate() + i);
 
-  console.log(DATE);
+    const data = {
+      date: commitDate.valueOf(),
+    };
 
-  jsonfile.writeFile(FILE_PATH, data, () => {
-    // git commit --date = ""
-    simpleGit()
-      .add([FILE_PATH])
-      .commit(
-        DATE.toISOString(),
-        { "--date": DATE.toISOString() },
-        makeCommit.bind(this, --n)
-      );
-  });
+    console.log(commitDate);
+
+    jsonfile.writeFile(FILE_PATH, data, () => {
+      // git commit --date=""
+      simpleGit()
+        .add([FILE_PATH])
+        .commit(
+          commitDate.toISOString(),
+          { "--date": commitDate.toISOString() },
+          makeCommit.bind(this, --n)
+        );
+    });
+  }
 };
 
-makeCommit(500);
+makeCommit(10); 
